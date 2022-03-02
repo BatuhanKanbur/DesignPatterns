@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlueprintSaveLoad : MonoBehaviour
+public class BlueprintSaveLoad : JsonServices
 {
     [Serializable]
     public class BlueprintObject
@@ -23,8 +23,6 @@ public class BlueprintSaveLoad : MonoBehaviour
     void Start()
     {
         MeshRenderer[] _gos = FindObjectsOfType<MeshRenderer>();
-        print(_gos.Length);
-        print("aaa");
         foreach (var _go in _gos)
         {
             BlueprintObject _newObj = new BlueprintObject();
@@ -34,14 +32,16 @@ public class BlueprintSaveLoad : MonoBehaviour
             _newObj.transformParent = GetGameObjectPath(_go.transform);
             blueprintList.blueprintObjects.Add(_newObj);
         }
-        string _jsonStr=(JsonUtility.ToJson(blueprintList));
-        LoadJson(_jsonStr);
+        string _jsonStr = ConvertJson(blueprintList);
+        print("Kaydedildi : " +_jsonStr);
+        blueprintList1 = LoadJson<BlueprintObjectsList>(_jsonStr);
+        print("Yüklendi");
       //  blueprintList.blueprintObjects.Clear();
     }
-    public void LoadJson(string _str)
-    {
-        blueprintList1 = JsonUtility.FromJson<BlueprintObjectsList>(_str);
-    }
+    //public void LoadJson(string _str)
+    //{
+    //    blueprintList1 = JsonUtility.FromJson<BlueprintObjectsList>(_str);
+    //}
     public Vector3 GetJsonVector3(string _vector3Str)
     {
         return Vector3.zero;
